@@ -1,5 +1,6 @@
 package text.editor.graphics.editor;
 
+import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.ActionMap;
@@ -14,7 +15,7 @@ import javax.swing.text.StyledEditorKit;
  * This is the main class for the text editor area of the application.
  * 
  * Created on:  February 28, 2016
- * Edited on:   February 29, 2016
+ * Edited on:   March 01, 2016
  *
  * @author Jackie Chan
  */
@@ -26,6 +27,7 @@ public class MainTextPane extends JTextPane {
      */
     public MainTextPane() {
         this.getDocument().addDocumentListener(new DocumentManager());
+        this.setPreferredSize(new Dimension(700,500));
         registerKeyBindings();
     }
     

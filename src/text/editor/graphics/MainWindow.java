@@ -4,13 +4,15 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import text.editor.graphics.editor.MainEditingToolBar;
 import text.editor.graphics.editor.MainTextPane;
 
 /**
  * This is the main window for the GUI.
  *
  * Created on:  February 28, 2016
- * Edited on:   February 29, 2016
+ * Edited on:   March 01, 2016
  * 
  * @author Jackie Chan
  */
@@ -25,21 +27,35 @@ public class MainWindow extends JFrame {
     private static MainTextPane       textPane;
     
     
+    /** Tool bar that will contain buttons for user interaction with the application. */
+    private static MainEditingToolBar editingToolBar;
+    
+    
     /** Default constructor for the MainWindow. */
-    public MainWindow() {}
+    public MainWindow() {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+        } catch (Exception err) {
+            err.printStackTrace(); 
+        }
+    }
     
     
     public void createAndShowGUI() {
-        this.setTitle("Main Window");
-        
-        panel       = new JPanel(new BorderLayout());
-        textPane  = new MainTextPane();
+        this.setTitle("Tellurium Text Editor");
+                
+        panel           = new JPanel(new BorderLayout());
+        textPane        = new MainTextPane();
+        editingToolBar  = new MainEditingToolBar();
         
         panel.add(new JScrollPane(textPane), BorderLayout.CENTER);
+        panel.add(editingToolBar, BorderLayout.PAGE_START);
         
         this.setContentPane(panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600, 450);
+        this.pack();
         this.setVisible(true);         
+        
+        textPane.requestFocus();
     }
 }
