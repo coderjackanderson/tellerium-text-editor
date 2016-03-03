@@ -1,8 +1,11 @@
 package text.editor.graphics.editor;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JTextPane;
@@ -10,12 +13,13 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.StyledEditorKit;
+import text.editor.io.ReadWriteUtilities;
 
 /**
  * This is the main class for the text editor area of the application.
  * 
  * Created on:  February 28, 2016
- * Edited on:   March 01, 2016
+ * Edited on:   March 02, 2016
  *
  * @author Jackie Chan
  */
@@ -56,10 +60,35 @@ public class MainTextPane extends JTextPane {
                                         "toggle_underline");
         am.put("toggle_underline", new StyledEditorKit.UnderlineAction());
         
+        // Action to write a file.
+        Action saveAction = new AbstractAction() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReadWriteUtilities.writeRTFDocument();
+            }
+        };        
+        
+        // Action to open a file.
+        Action openAction = new AbstractAction() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReadWriteUtilities.readFile();
+            }
+        };
+        
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK),
+                                        "save_file");
+        am.put("save_file", saveAction);
+        
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK), 
+                                        "open_file");
+        am.put("open_file", openAction);
+        
         /*
-            Later on, create key bindings for creating new files, saving files,
-            opening a file, save-as, changing text color, changing font size, 
-            and much more.
+            Later on, create key bindings for creating new files, changing text 
+            color, changing font size, and much more.
         */
     }
     
@@ -92,5 +121,5 @@ public class MainTextPane extends JTextPane {
         }
     
     }
-    
+
 }

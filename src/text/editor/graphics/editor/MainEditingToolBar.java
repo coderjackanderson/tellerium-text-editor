@@ -1,14 +1,17 @@
 package text.editor.graphics.editor;
 
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.text.StyledEditorKit;
+import text.editor.io.ReadWriteUtilities;
 
 
 /**
@@ -16,7 +19,7 @@ import javax.swing.text.StyledEditorKit;
  * styles and to also open, create new, and save files.
  * 
  * Created on:  March 01, 2016
- * Edited on:   March 01, 2016
+ * Edited on:   March 02, 2016
  *
  * @author Jackie Chan
  */
@@ -54,6 +57,23 @@ public class MainEditingToolBar extends JToolBar {
         boldButton.addActionListener(new StyledEditorKit.BoldAction());
         italicButton.addActionListener(new StyledEditorKit.ItalicAction());
         underlineButton.addActionListener(new StyledEditorKit.UnderlineAction());
+        
+        saveFileButton.addActionListener(new AbstractAction() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReadWriteUtilities.writeRTFDocument();
+            }
+        });
+
+        
+        openFileButton.addActionListener(new AbstractAction() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReadWriteUtilities.readFile();
+            }
+        });
         
         fontNamesComboBox = new JComboBox(GraphicsEnvironment.
                                             getLocalGraphicsEnvironment().

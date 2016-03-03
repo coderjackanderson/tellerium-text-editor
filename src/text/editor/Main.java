@@ -2,13 +2,14 @@ package text.editor;
 
 import text.editor.graphics.MainWindow;
 
+
 /**
  * This is the main class for the Java Text Editor application. It will contain 
  * tests for the startup of the application, and actually start up the
  * application.
  * 
  * Created On:  February 28, 2016
- * Edited On:   February 29, 2016
+ * Edited On:   March 02, 2016
  * 
  * @author Jackie Chan
  */

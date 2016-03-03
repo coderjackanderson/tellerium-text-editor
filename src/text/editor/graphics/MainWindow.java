@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.Document;
 import text.editor.graphics.editor.MainEditingToolBar;
 import text.editor.graphics.editor.MainTextPane;
 
@@ -12,7 +14,7 @@ import text.editor.graphics.editor.MainTextPane;
  * This is the main window for the GUI.
  *
  * Created on:  February 28, 2016
- * Edited on:   March 01, 2016
+ * Edited on:   March 02, 2016
  * 
  * @author Jackie Chan
  */
@@ -35,12 +37,18 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        } catch (Exception err) {
+        } catch (ClassNotFoundException | 
+                    InstantiationException | 
+                    IllegalAccessException | 
+                    UnsupportedLookAndFeelException err) {
             err.printStackTrace(); 
         }
     }
     
     
+    /**
+     * Creates and shows the MainWindow GUI.
+     */
     public void createAndShowGUI() {
         this.setTitle("Tellurium Text Editor");
                 
@@ -58,4 +66,15 @@ public class MainWindow extends JFrame {
         
         textPane.requestFocus();
     }
+    
+    
+    /**
+     * Returns the Document associated with the main text editing area.
+     * 
+     * @return      The document associated with the main text editing area.
+     */
+    public static Document getTextPaneDocument() {
+        return textPane.getDocument();
+    }
+    
 }
