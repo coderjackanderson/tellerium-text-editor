@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.text.StyledEditorKit;
+import text.editor.graphics.MainWindow;
 import text.editor.io.ReadWriteUtilities;
 
 
@@ -19,7 +20,7 @@ import text.editor.io.ReadWriteUtilities;
  * styles and to also open, create new, and save files.
  * 
  * Created on:  March 01, 2016
- * Edited on:   March 02, 2016
+ * Edited on:   March 03, 2016
  *
  * @author Jackie Chan
  */
@@ -72,6 +73,15 @@ public class MainEditingToolBar extends JToolBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReadWriteUtilities.readFile();
+            }
+        });
+        
+        
+        newFileButton.addActionListener(new AbstractAction() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainWindow.getTabbedPane().createNewDocument();
             }
         });
         

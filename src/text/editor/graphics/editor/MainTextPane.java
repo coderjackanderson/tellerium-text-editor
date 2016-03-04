@@ -13,13 +13,14 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.StyledEditorKit;
+import text.editor.graphics.MainWindow;
 import text.editor.io.ReadWriteUtilities;
 
 /**
  * This is the main class for the text editor area of the application.
  * 
  * Created on:  February 28, 2016
- * Edited on:   March 02, 2016
+ * Edited on:   March 03, 2016
  *
  * @author Jackie Chan
  */
@@ -60,7 +61,6 @@ public class MainTextPane extends JTextPane {
                                         "toggle_underline");
         am.put("toggle_underline", new StyledEditorKit.UnderlineAction());
         
-        // Action to write a file.
         Action saveAction = new AbstractAction() {
             
             @Override
@@ -69,12 +69,19 @@ public class MainTextPane extends JTextPane {
             }
         };        
         
-        // Action to open a file.
         Action openAction = new AbstractAction() {
             
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReadWriteUtilities.readFile();
+            }
+        };
+        
+        Action newFileAction = new AbstractAction() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainWindow.getTabbedPane().createNewDocument();
             }
         };
         
@@ -86,10 +93,10 @@ public class MainTextPane extends JTextPane {
                                         "open_file");
         am.put("open_file", openAction);
         
-        /*
-            Later on, create key bindings for creating new files, changing text 
-            color, changing font size, and much more.
-        */
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), 
+                                        "new_file");
+        am.put("new_file", newFileAction);
+        
     }
     
     
@@ -108,11 +115,13 @@ public class MainTextPane extends JTextPane {
         @Override
         public void insertUpdate(DocumentEvent e) {
             amountOfCharacters += e.getLength();
+            MainWindow.updateCharacterCount(amountOfCharacters);
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
             amountOfCharacters -= e.getLength();
+            MainWindow.updateCharacterCount(amountOfCharacters);
         }
 
         @Override

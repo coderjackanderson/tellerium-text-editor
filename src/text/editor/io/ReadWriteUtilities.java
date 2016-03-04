@@ -1,6 +1,7 @@
 package text.editor.io;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,18 +10,26 @@ import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.rtf.RTFEditorKit;
+import text.editor.errorreporting.ErrorReport;
 import text.editor.graphics.MainWindow;
 
 /**
  * Writes files to the file system.
  *
- * Created on:  02 March 2016
- * Edited on:   02 March 2016
+ * Created on:  March 02, 2016
+ * Edited on:   March 03, 2016
  * 
  * @author Jackie Chan
  */
 public class ReadWriteUtilities {
 
+    
+    /** 
+     * Private constructor so the ReadWriteUtilities class cannot be 
+     * instantiated. 
+     */
+    private ReadWriteUtilities(){}
+    
     
     /**
      * Writes the contents of the Document into a RTF file. Plain text will
@@ -35,6 +44,13 @@ public class ReadWriteUtilities {
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             
             String fileName = fc.getSelectedFile().getAbsolutePath();
+            
+            /*
+                Create regular expression to outlaw any characters that will
+                cause problems in saving the file. 
+                
+                ([a-zA-Z0-9_-"',]+\\.*)  or something like that (no parenthesis).
+            */
             
             if(!fileName.contains(".rtf")) {
                 JOptionPane.showMessageDialog(null, 
@@ -66,8 +82,13 @@ public class ReadWriteUtilities {
                                                 "File Saved...",
                                                 JOptionPane.PLAIN_MESSAGE);
                 
+                // Set the title of the selected tab to the name of the file.
+                MainWindow.setTabTitle(fileName.substring(
+                                        fileName.lastIndexOf(File.separator)+1),
+                                        MainWindow.getTabbedPane().getSelectedIndex());
+                
             } catch (IOException | BadLocationException err) {
-                err.printStackTrace();
+                new ErrorReport().createErrorReport(err);
             }
         }
     }
@@ -92,16 +113,25 @@ public class ReadWriteUtilities {
                 readFile();
             }
             
-            String fileName = fc.getSelectedFile().getAbsolutePath();
+            String fName = fc.getSelectedFile().getAbsolutePath();
             
             RTFEditorKit kit = new RTFEditorKit();
             
             try {
                 
-                kit.read(new FileReader(fileName), MainWindow.getTextPaneDocument(), 0);
+                MainWindow.getTabbedPane().createNewDocument();
+                
+                MainWindow.getTabbedPane().setSelectedIndex(MainWindow.getTabbedPane().getTabCount()-1);
+                
+                kit.read(new FileReader(fName), MainWindow.getTextPaneDocument(), 0);
+                
+                // Set the title of the selected tab to the name of the file.
+                MainWindow.setTabTitle(fName.substring(
+                                        fName.lastIndexOf(File.separator)+1), 
+                                        MainWindow.getTabbedPane().getSelectedIndex());
                 
             } catch (IOException | BadLocationException err) {
-                err.printStackTrace();
+                new ErrorReport().createErrorReport(err);
             }    
         }
     }

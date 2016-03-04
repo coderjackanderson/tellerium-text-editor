@@ -1,5 +1,6 @@
 package text.editor;
 
+import java.io.File;
 import text.editor.graphics.MainWindow;
 
 
@@ -9,7 +10,7 @@ import text.editor.graphics.MainWindow;
  * application.
  * 
  * Created On:  February 28, 2016
- * Edited On:   March 02, 2016
+ * Edited On:   March 03, 2016
  * 
  * @author Jackie Chan
  */
@@ -23,6 +24,11 @@ public class Main {
      * @param args      is irrelevant.
      */
     public static void main(String[] args) {
+        
+        // Check for the error reporting directory. If it does not exist, make it.
+        if(!new File("ErrorReportingDirectory").exists()) {
+            new File("ErrorReportingDirectory").mkdir();
+        }
         new MainWindow().createAndShowGUI();
     }
     

@@ -3,18 +3,19 @@ package text.editor.graphics;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.Document;
+import text.editor.errorreporting.ErrorReport;
 import text.editor.graphics.editor.MainEditingToolBar;
-import text.editor.graphics.editor.MainTextPane;
+import text.editor.graphics.editor.MainTabHolder;
+import text.editor.graphics.editor.StatusBar;
 
 /**
  * This is the main window for the GUI.
  *
  * Created on:  February 28, 2016
- * Edited on:   March 02, 2016
+ * Edited on:   March 03, 2016
  * 
  * @author Jackie Chan
  */
@@ -26,11 +27,15 @@ public class MainWindow extends JFrame {
     
     
     /** Area where the user will enter and format text for their document. */
-    private static MainTextPane       textPane;
+    private static MainTabHolder        tabHolder;
     
     
     /** Tool bar that will contain buttons for user interaction with the application. */
-    private static MainEditingToolBar editingToolBar;
+    private static MainEditingToolBar   editingToolBar;
+    
+    
+    /** The status bar. */
+    private static StatusBar            statusBar;
     
     
     /** Default constructor for the MainWindow. */
@@ -41,7 +46,7 @@ public class MainWindow extends JFrame {
                     InstantiationException | 
                     IllegalAccessException | 
                     UnsupportedLookAndFeelException err) {
-            err.printStackTrace(); 
+            new ErrorReport().createErrorReport(err);
         }
     }
     
@@ -50,21 +55,21 @@ public class MainWindow extends JFrame {
      * Creates and shows the MainWindow GUI.
      */
     public void createAndShowGUI() {
-        this.setTitle("Tellurium Text Editor");
+        this.setTitle("Text Editor");
                 
         panel           = new JPanel(new BorderLayout());
-        textPane        = new MainTextPane();
+        tabHolder       = new MainTabHolder();
         editingToolBar  = new MainEditingToolBar();
+        statusBar       = new StatusBar();
         
-        panel.add(new JScrollPane(textPane), BorderLayout.CENTER);
+        panel.add(tabHolder, BorderLayout.CENTER);
         panel.add(editingToolBar, BorderLayout.PAGE_START);
+        panel.add(statusBar, BorderLayout.PAGE_END);
         
         this.setContentPane(panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
         this.setVisible(true);         
-        
-        textPane.requestFocus();
     }
     
     
@@ -74,7 +79,33 @@ public class MainWindow extends JFrame {
      * @return      The document associated with the main text editing area.
      */
     public static Document getTextPaneDocument() {
-        return textPane.getDocument();
+        return tabHolder.getTextPane(tabHolder.getSelectedIndex()).getDocument();
+    }
+    
+    
+    /**
+     * Returns the tabbed pane that holds the documents.
+     * 
+     * @return      the JTabbedPane that holds the documents.
+     */
+    public static MainTabHolder getTabbedPane() {
+        return tabHolder;
+    }
+    
+    
+    public static void setTabTitle(String title, int index) {
+        tabHolder.setTitleAt(index, title);
+    }
+    
+    
+    /**
+     * Updates the amount of characters the user has typed in displayed on the
+     * status bar.
+     * 
+     * @param value     the value to set the amount of characters to.
+     */
+    public static void updateCharacterCount(int value) {
+        statusBar.updateCharacterCount(value);
     }
     
 }
