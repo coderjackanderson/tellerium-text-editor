@@ -12,6 +12,8 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 import text.editor.graphics.MainWindow;
 import text.editor.io.ReadWriteUtilities;
@@ -20,7 +22,7 @@ import text.editor.io.ReadWriteUtilities;
  * This is the main class for the text editor area of the application.
  * 
  * Created on:  February 28, 2016
- * Edited on:   March 03, 2016
+ * Edited on:   March 04, 2016
  *
  * @author Jackie Chan
  */
@@ -40,9 +42,12 @@ public class MainTextPane extends JTextPane {
     /**
      * Registers key bindings for the CTRL+B, CTRL+I, and CTRL+U key combinations.
      * 
-     * CTRL-B       this will activate or deactivate the bold format.
-     * CTRL-I       this will activate or deactivate the italic format.
-     * CTRL-U       this will activate or deactivate the underline format.
+     * CTRL+B       this will activate or deactivate the bold format.
+     * CTRL+I       this will activate or deactivate the italic format.
+     * CTRL+U       this will activate or deactivate the underline format.
+     * CTRL+N       this will create a new document.
+     * CTRL+S       this will save the current document.
+     * CTRL+O       this will open a document.
      */
     private void registerKeyBindings() {
         
@@ -66,6 +71,7 @@ public class MainTextPane extends JTextPane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReadWriteUtilities.writeRTFDocument();
+                MainWindow.setFocusToDocument();
             }
         };        
         
@@ -74,6 +80,7 @@ public class MainTextPane extends JTextPane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReadWriteUtilities.readFile();
+                MainWindow.setFocusToDocument();
             }
         };
         
@@ -82,6 +89,7 @@ public class MainTextPane extends JTextPane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainWindow.getTabbedPane().createNewDocument();
+                MainWindow.setFocusToDocument();
             }
         };
         
@@ -101,8 +109,8 @@ public class MainTextPane extends JTextPane {
     
     
     /**
-     * For right now, this class will just keep track of how many characters
-     * have been entered and removed from the document.
+     * Will keep track of what fonts attributes are being used and how many
+     * characters in the document.
      */
     class DocumentManager implements DocumentListener {
         
@@ -110,23 +118,56 @@ public class MainTextPane extends JTextPane {
         // The amount of characters in the document.
         private int amountOfCharacters = 0;
         
+        
+        // Attributes for the text pane will be set to this.
+        private MutableAttributeSet set;
+        
+        
+        /** Default constructor for the DocumentManager. */
         public DocumentManager() {}
 
         @Override
         public void insertUpdate(DocumentEvent e) {
             amountOfCharacters += e.getLength();
             MainWindow.updateCharacterCount(amountOfCharacters);
+            
+            check();
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
             amountOfCharacters -= e.getLength();
             MainWindow.updateCharacterCount(amountOfCharacters);
+            
+            check();
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
             System.err.println("changeUpdate(DocumentEvent e) not implemented...");
+        }
+        
+        
+        /**
+         * Checks if any field in the tool bar needs to be updated.
+         */
+        private void check() {
+            
+            set = MainWindow.getTextPane().getInputAttributes();
+            
+            String fontName = StyleConstants.getFontFamily(set);
+            int fontSize    = StyleConstants.getFontSize(set);
+            
+            
+            /*
+                Check if the font or font size in the tool bar needs to be
+                updated.
+            */
+            if(!fontName.equals(MainEditingToolBar.getCurrentSelectedFontName())) {
+                MainEditingToolBar.setCurrentFontName(fontName);
+            } else if(fontSize != MainEditingToolBar.getCurrentSelectedFontSize()) {
+                MainEditingToolBar.setCurrentFontSize(fontSize);
+            }
         }
     
     }

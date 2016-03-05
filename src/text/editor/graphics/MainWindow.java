@@ -9,13 +9,14 @@ import javax.swing.text.Document;
 import text.editor.errorreporting.ErrorReport;
 import text.editor.graphics.editor.MainEditingToolBar;
 import text.editor.graphics.editor.MainTabHolder;
+import text.editor.graphics.editor.MainTextPane;
 import text.editor.graphics.editor.StatusBar;
 
 /**
  * This is the main window for the GUI.
  *
  * Created on:  February 28, 2016
- * Edited on:   March 03, 2016
+ * Edited on:   March 04, 2016
  * 
  * @author Jackie Chan
  */
@@ -83,6 +84,11 @@ public class MainWindow extends JFrame {
     }
     
     
+    public static MainTextPane getTextPane() {
+        return (MainTextPane)tabHolder.getTextPane(tabHolder.getSelectedIndex());
+    }
+    
+    
     /**
      * Returns the tabbed pane that holds the documents.
      * 
@@ -93,6 +99,12 @@ public class MainWindow extends JFrame {
     }
     
     
+    /**
+     * Sets the title of the tab at the specified index.
+     * 
+     * @param title     the title.
+     * @param index     the index of the tab whose title should be set.
+     */
     public static void setTabTitle(String title, int index) {
         tabHolder.setTitleAt(index, title);
     }
@@ -106,6 +118,14 @@ public class MainWindow extends JFrame {
      */
     public static void updateCharacterCount(int value) {
         statusBar.updateCharacterCount(value);
+    }
+    
+    
+    /**
+     * Sets the focus to the document that is selected or lost focus.
+     */
+    public static void setFocusToDocument() {
+        getTextPane().requestFocus();
     }
     
 }

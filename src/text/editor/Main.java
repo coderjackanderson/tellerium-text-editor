@@ -10,7 +10,7 @@ import text.editor.graphics.MainWindow;
  * application.
  * 
  * Created On:  February 28, 2016
- * Edited On:   March 03, 2016
+ * Edited On:   March 04, 2016
  * 
  * @author Jackie Chan
  */
@@ -30,6 +30,7 @@ public class Main {
             new File("ErrorReportingDirectory").mkdir();
         }
         new MainWindow().createAndShowGUI();
+        MainWindow.setFocusToDocument();
     }
     
 }

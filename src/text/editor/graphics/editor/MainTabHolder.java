@@ -20,7 +20,7 @@ import javax.swing.JScrollPane;
  * Holds each document in a new tab.
  *
  * Created on:  March 03, 2016
- * Edited on:   March 03, 2016
+ * Edited on:   March 04, 2016
  *
  * @author Jackie Chan
  */
@@ -45,6 +45,7 @@ public class MainTabHolder extends JTabbedPane {
     public void createNewDocument() {
         this.addTab("New File "+(this.getTabCount()+1), new JScrollPane(new MainTextPane()));
         this.setTabComponentAt(this.getTabCount()-1, new CustomTab(this));
+        this.setSelectedIndex(this.getTabCount()-1);
     }
     
     
