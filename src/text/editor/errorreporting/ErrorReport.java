@@ -8,11 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
+
 /**
  * Writes an error report to the error reporting directory.
  * 
  * Created on:  March 03, 2016
- * Edited on:   March 04, 2016
+ * Edited on:   March 05, 2016
  *
  * @author Jackie Chan
  */

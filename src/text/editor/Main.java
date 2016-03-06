@@ -5,32 +5,34 @@ import text.editor.graphics.MainWindow;
 
 
 /**
- * This is the main class for the Java Text Editor application. It will contain 
- * tests for the startup of the application, and actually start up the
- * application.
- * 
+ * The Main class will perform tests on the applications running environment and
+ * then display the GUI of the application.
+ *
  * Created On:  February 28, 2016
- * Edited On:   March 04, 2016
- * 
+ * Edited On:   March 05, 2016
+ *
  * @author Jackie Chan
  */
 public class Main {
 
-    
+
     /**
-     * The main method will perform checks for application settings and start 
-     * the application (when fully implemented).
-     * 
-     * @param args      is irrelevant.
+     * The main method will perform checks on the environment the program is
+     * running in and then display the GUI.
+     *
+     * @param args      The command line arguments are not used.
      */
     public static void main(String[] args) {
-        
-        // Check for the error reporting directory. If it does not exist, make it.
+
+        /*
+            Check if the error reporting directory exists. If it doesn't make it.
+        */
         if(!new File("ErrorReportingDirectory").exists()) {
             new File("ErrorReportingDirectory").mkdir();
         }
+
+        // Show the GUI.
         new MainWindow().createAndShowGUI();
-        MainWindow.setFocusToDocument();
     }
-    
+
 }
